@@ -195,8 +195,6 @@ then
 	
 fi
 
-sudo expect -f /vagrant/scripts/sesame-setup.expect
-
 ###############################
 # IBR PACKAGES & EXAMPLE DATA #
 ###############################
