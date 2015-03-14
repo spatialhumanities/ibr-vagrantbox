@@ -6,12 +6,13 @@ Vagrant.configure("2") do |config|
   ## basic settings ##
 
   config.vm.box = "wheezy64"
-  config.vm.hostname = "ibr"
-
   config.vm.box_url = "http://www.digitale-akademie.de/fileadmin/vagrantboxes/wheezy64.box"
 
-  config.vm.network :forwarded_port, host: 8080, guest: 80
+  config.vm.hostname = "ibr-vagrantbox"
+  config.vm.define "ibr-vagrantbox" do |ibr-vagrantbox|
+  end
 
+  config.vm.network :forwarded_port, host: 8080, guest: 80
   config.vm.network :private_network, ip: "10.0.0.24"
 
   config.trigger.after [:provision, :up, :reload] do
@@ -27,6 +28,8 @@ Vagrant.configure("2") do |config|
   ## VM customization ##
 
   config.vm.provider :virtualbox do |vb|
+
+	vb.name = "IBR Vagrantbox"
 
     vb.customize ["modifyvm", :id, "--memory", 2096]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
