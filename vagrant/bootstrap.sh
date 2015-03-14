@@ -24,10 +24,10 @@ fi
 
 echo 'Updating VM base system'
 
-#sudo apt-get update
-#sudo apt-get -y upgrade
-#sudo apt-get -y clean
-#sudo apt-get -y autoremove
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo apt-get -y clean
+sudo apt-get -y autoremove
 
 ##########
 # expect #
@@ -52,8 +52,8 @@ then
 	sudo /etc/init.d/ntp stop
 	sudo ntpdate 0.debian.pool.ntp.org
 	sudo /etc/init.d/ntp start
-#else
-#	sudo /etc/init.d/ntp start
+else
+	sudo /etc/init.d/ntp start
 fi
 
 #######
@@ -364,12 +364,15 @@ then
 	sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/shp2pgsql
 	sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/pgsql2shp
 	sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/raster2pgsql
+	sudo rm -rf /etc/postgresql/9.1/main/pg_hba.conf
+	sudo cp /vagrant/etc/postgresql/9.1/main/pg_hba.conf /etc/postgresql/9.1/main/pg_hba.conf
+	sudo chown postgres:postgres /etc/postgresql/9.1/main/pg_hba.conf
 	sudo /etc/init.d/postgresql restart
 
 	echo 'Creating example database...'
-	psql -U postgres -h 127.0.0.1 -c "CREATE DATABASE oberwesel;"
-	psql -U postgres -h 127.0.0.1 -c "CREATE USER vagrant WITH SUPERUSER PASSWORD 'vagrant';"
-	pg_restore -U postgres -h 127.0.0.1 -d oberwesel /vagrant/data/postgresql/oberwesel.tar
+	sudo psql -U postgres -h 127.0.0.1 -c "CREATE DATABASE oberwesel;"
+	sudo psql -U postgres -h 127.0.0.1 -c "CREATE USER vagrant WITH SUPERUSER PASSWORD 'vagrant';"
+	sudo pg_restore -U postgres -h 127.0.0.1 -d oberwesel /vagrant/data/postgresql/oberwesel.tar
 
 fi 
 
@@ -473,5 +476,6 @@ echo 'Provisioning finished.'
 ## vbguest plugin?
 # sudo apt-get purge virtualbox*
 # VM guest additions old version => purge and vbguest?
+## vagrant plugin install vagrant-vbguest
 ## port forwarding?
 ## vagrant plugin install vagrant-triggers
