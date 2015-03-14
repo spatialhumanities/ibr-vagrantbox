@@ -2,6 +2,8 @@
 
 Diese Vagrantbox liefert eine vollständige Serverumgebung zum lokalen Betrieb des Generic Viewers und aller zugehörigen Komponenten einschließlich eines Beispielprojektes (Liebfrauenkirche, Obwerwesel).
 
+> Hinweis: Die Box ist noch nicht endgültig produktionsreif.
+
 ## Systemvoraussetzungen zum lokalen Betrieb der Demo VM
 
 - Betriebsystem: Windows/MAC/Linux
@@ -61,7 +63,7 @@ http://localhost/ (Startseite der Demo Box)
 
 *Hinweis:* Auf dem Host-Computer sollte kein lokaler Webserver auf Port 80 laufen, da es sonst zu Portkonflikten kommt.
 
-Die einzelnen Komponenten können unter folgenden Andressen angesprochen werden:
+Die einzelnen Komponenten können unter folgenden Adressen angesprochen werden:
 
 ```bash
 - http://localhost/viewer (Generic Viewer)

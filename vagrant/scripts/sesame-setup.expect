@@ -1,10 +1,10 @@
-spawn /tmp/openrdf-sesame-2.8.1/bin/console.sh
-expect "" { send "connect http://localhost/openrdf-sesame.\n" }
-expect "" { send "create native.\n" }
+spawn /var/tmp/openrdf-sesame-2.8.1/bin/console.sh
+send "connect http://localhost/openrdf-sesame.\n"
+send "create native.\n"
 expect "Repository ID" { send "oberwesel\n" }
 expect "Repository title" { send "Oberwesel Triple Store\n" }
 expect "Triple indexes" { send "\n" }
-expect "" { send "exit.\n" }
+send "exit.\n"
 expect -timeout -1 "Console repository installation done" {
 wait
 exit

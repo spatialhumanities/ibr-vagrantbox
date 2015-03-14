@@ -1,0 +1,6 @@
+spawn sudo update-alternatives --config editor
+expect "Press enter to keep the current choice" { send "3\n" }
+expect -timeout -1 "Editor switch done" {
+wait
+exit
+}

@@ -22,10 +22,22 @@ then
 	sudo touch /etc/apt/keyserverset
 fi
 
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get -y clean
-sudo apt-get -y autoremove
+echo 'Updating VM base system'
+
+#sudo apt-get update
+#sudo apt-get -y upgrade
+#sudo apt-get -y clean
+#sudo apt-get -y autoremove
+
+##########
+# expect #
+##########
+
+if [ ! -f /usr/bin/expect ];
+then
+	echo 'Installing expect...'
+	sudo apt-get -y install expect
+fi
 
 #######
 # ntp #
@@ -33,14 +45,15 @@ sudo apt-get -y autoremove
 
 if [ ! -f /etc/init.d/ntp ];
 then
+	echo 'Installing ntp server...'
 	sudo echo 'Europe/Berlin' > /etc/timezone
 	sudo dpkg-reconfigure -f noninteractive tzdata
 	sudo apt-get -y install ntp ntpdate
 	sudo /etc/init.d/ntp stop
 	sudo ntpdate 0.debian.pool.ntp.org
 	sudo /etc/init.d/ntp start
-else
-	sudo /etc/init.d/ntp start
+#else
+#	sudo /etc/init.d/ntp start
 fi
 
 #######
@@ -49,6 +62,7 @@ fi
 
 if [ ! -f /usr/bin/svn ];
 then
+	echo 'Installing subversion...'
 	sudo apt-get -y install subversion
 fi
 
@@ -58,6 +72,7 @@ fi
 
 if [ ! -f /usr/bin/git ];
 then
+	echo 'Installing git...'
 	sudo apt-get -y install git
 fi
 
@@ -67,7 +82,9 @@ fi
 
 if [ ! -f /usr/bin/vim ];
 then
+	echo 'Installing vim...'
 	sudo apt-get -y install vim
+	sudo expect -f /vagrant/scripts/set-default-editor.expect
 fi
 
 sudo cp -fs /vagrant/home/vagrant/.vimrc /root/.vimrc
@@ -79,6 +96,7 @@ sudo cp -fs /vagrant/home/vagrant/.vimrc /home/vagrant/.vimrc
 
 if [ ! -f /usr/bin/unzip ];
 then
+	echo 'Installing unzip...'
 	sudo apt-get -y install unzip
 fi
 
@@ -88,16 +106,8 @@ fi
 
 if [ ! -f /usr/bin/pigz ];
 then
+	echo 'Installing pigz...'
 	sudo apt-get -y install pigz
-fi
-
-##########
-# expect #
-##########
-
-if [ ! -f /usr/bin/expect ];
-then
-	sudo apt-get -y install expect
 fi
 
 ########
@@ -106,6 +116,7 @@ fi
 
 if [ ! -f /usr/bin/htop ];
 then
+	echo 'Installing htop...'
 	sudo apt-get -y install htop
 fi
 
@@ -115,6 +126,7 @@ fi
 
 if [ ! -f /usr/bin/screen ];
 then
+	echo 'Installing screen...'
 	sudo apt-get -y install screen
 fi
 
@@ -127,6 +139,7 @@ sudo cp /vagrant/home/vagrant/.screenrc /home/vagrant/.screenrc
 
 if [ ! -f /usr/bin/mc ];
 then
+	echo 'Installing midnight commander...'
 	sudo apt-get -y install mc
 fi
 
@@ -136,6 +149,7 @@ fi
 
 if [ ! -f /usr/bin/java ];
 then
+	echo 'Installing Java...'
 	echo 'oracle-java7-installer shared/present-oracle-license-v1-1 note' | debconf-set-selections
 	echo 'oracle-java7-installer oracle-java7-installer/local string' | debconf-set-selections
 	echo 'oracle-java7-installer shared/accepted-oracle-license-v1-1 boolean true' | debconf-set-selections
@@ -154,6 +168,7 @@ fi
 
 if [ ! -f /etc/tomcat7/server.xml ];
 then
+	echo 'Installing Tomcat Application Server and Maven...'
 	sudo apt-get -y install tomcat7 tomcat7-admin maven
 fi
 
@@ -163,10 +178,12 @@ fi
 
 if [ ! -f /var/lib/tomcat7/webapps/openrdf-sesame.war ];
 then
+	echo 'Installing Sesame RDF server...'
 	sudo mkdir -p /usr/share/tomcat7/.aduna/
 	sudo chown root:tomcat7 /usr/share/tomcat7/.aduna/
+	sudo chmod g+w /usr/share/tomcat7/.aduna/
 	cd /tmp/
-	sudo wget --trust-server-names "http://sourceforge.net/projects/sesame/files/Sesame%202/2.8.1/openrdf-sesame-2.8.1-sdk.tar.gz/download"
+	sudo wget -nv --trust-server-names "http://sourceforge.net/projects/sesame/files/Sesame%202/2.8.1/openrdf-sesame-2.8.1-sdk.tar.gz/download"
 	tar -xzvf openrdf-sesame-2.8.1-sdk.tar.gz
 	sudo mv openrdf-sesame-2.8.1/war/openrdf-sesame.war /var/lib/tomcat7/webapps/openrdf-sesame.war
 	sudo mv openrdf-sesame-2.8.1/war/openrdf-workbench.war /var/lib/tomcat7/webapps/openrdf-workbench.war
@@ -178,23 +195,25 @@ then
 	
 fi
 
+sudo expect -f /vagrant/scripts/sesame-setup.expect
+
 ###############################
 # IBR PACKAGES & EXAMPLE DATA #
 ###############################
 
 if [ ! -f /vagrant/data/downloaded ];
 then
+	echo 'Downloading example data...'
 	cd /vagrant/
-	echo 'Downloading example data'
-	wget http://www.spatialhumanities.de/data.zip
+	wget -nv http://www.spatialhumanities.de/data.zip
 	unzip data.zip
 fi
 
 if [ ! -f /vagrant/packages/downloaded ];
 then
+	echo 'Downloading IBR software components...'
 	cd /vagrant/
-	echo 'Downloading software packages'
-	wget http://www.spatialhumanities.de/packages.zip
+	wget -nv http://www.spatialhumanities.de/packages.zip
 	unzip packages.zip
 fi
 
@@ -205,11 +224,13 @@ fi
 if [ ! -f /var/lib/tomcat7/webapps/spatialstore.war ];
 then
 
+	echo 'Deploying Spatialstore...'
+
 	# deploy spatialstore
-	sudo mv /vagrant/packages/spatialstore.war /var/lib/tomcat7/webapps/spatialstore.war
+	sudo cp -a /vagrant/packages/spatialstore.war /var/lib/tomcat7/webapps/spatialstore.war
 	
 	# link example rgb + rem panos
-	sudo ln -s /vagrant/data/pano/ /var/www/pano/
+	sudo ln -s /vagrant/data/pano /var/www/pano
 
 	# link pointcloud data
 	sudo mkdir -p /var/tmp/pano/oberwesel/screenshot
@@ -225,6 +246,8 @@ fi
 #if [ ! -f /var/lib/tomcat7/webapps/annotationserver.war ];
 #then
 
+#	echo 'Deploying Annotationserver...'
+
 	# deploy annotationserver
 #	sudo mv /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
 
@@ -234,13 +257,19 @@ fi
 # VIEWER #
 ##########
 
-#if [ ! -f /var/lib/tomcat7/webapps/viewer.war ];
-#then
+if [ ! -f /var/www/viewer/index.html ];
+then
 
-	# deploy generic viewer
-#	sudo mv /vagrant/packages/viewer.war /var/lib/tomcat7/webapps/viewer.war
+	echo 'Deploying Generic Viewer...'
 
-#fi
+	# cp and unzip generic viewer
+	sudo cp -a /vagrant/packages/viewer.zip /var/www/
+	cd /var/www/
+	sudo unzip viewer.zip
+	sudo rm viewer.zip
+	sudo chown -R www-data:www-data /var/www/viewer/
+
+fi
 
 #######
 # ASK #
@@ -249,11 +278,14 @@ fi
 if [ ! -f /var/www/ask/index.html ];
 then
 
-	# cp ask
-	sudo mv /vagrant/packages/ask.tgz /tmp/ask.tgz
-	tar -xzvf /tmp/ask.tgz
-	sudo chown -R www-data:www-data /tmp/ask/
-	sudo mv /tmp/ask/ /var/www/
+	echo 'Deploying Ask...'
+
+	# cp and unzip ask
+	sudo cp -a /vagrant/packages/ask.zip /var/www/
+	cd /var/www/
+	sudo unzip ask.zip
+	sudo rm ask.zip
+	sudo chown -R www-data:www-data /var/www/ask/
 
 fi
 
@@ -263,6 +295,8 @@ fi
 
 if [ ! -f /etc/apache2/apache2.conf ];
 then
+
+	echo 'Installing Apache Webserver...'
 
 	# install apache2
 	sudo apt-get -y install apache2 libapache2-mod-jk
@@ -278,6 +312,9 @@ then
 
 	# enable modules
 	sudo a2enmod rewrite ssl headers
+
+	# remove default index
+	sudo rm -rf /var/www/index.html
 fi
 
 #########
@@ -286,9 +323,14 @@ fi
 
 if [ ! -f /etc/mysql/my.cnf ];
 then
+
+	echo 'Installing MySQL...'
+
 	echo 'mysql-server mysql-server/root_password password vagrant' | debconf-set-selections
 	echo 'mysql-server mysql-server/root_password_again password vagrant' | debconf-set-selections
-	apt-get -y install mysql-client mysql-server
+	sudo apt-get -y install mysql-client mysql-server
+
+	echo 'Creating notebook database...'
 
 	# create annotation database and pundit user
 	sudo mysql -uroot -pvagrant -e "CREATE DATABASE semlibStorage COLLATE utf8_general_ci;"
@@ -307,9 +349,12 @@ fi
 
 if [ ! -f /etc/init.d/postgresql ];
 then
-	apt-get -y install sudo apt-get install build-essential postgresql libxml2-dev libproj-dev libjson0-dev libgeos-dev xsltproc docbook-xsl docbook-mathml libgdal-dev 
+
+	echo 'Installing PostgreSQL and PostGIS...'
+
+	sudo apt-get -y install postgresql postgresql-server-dev-9.1 build-essential libxml2-dev libproj-dev libjson0-dev libgeos-dev xsltproc docbook-xsl docbook-mathml libgdal-dev 
 	cd /tmp/
-	sudo wget http://download.osgeo.org/postgis/source/postgis-2.0.6.tar.gz
+	sudo wget -nv http://download.osgeo.org/postgis/source/postgis-2.0.6.tar.gz
 	tar -xzvf postgis-2.0.6.tar.gz
 	cd postgis-2.0.6
 	sudo ./configure
@@ -323,13 +368,12 @@ then
 	sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/raster2pgsql
 	sudo /etc/init.d/postgresql restart
 
-	# create user and project database
-	sudo su postgres
-	createdb oberwesel
-	createuser -s vagrant
-	psql -c "ALTER USER vagrant WITH PASSWORD 'vagrant';"
-	pg_restore -d oberwesel /vagrant/data/postgresql/oberwesel.tar
-fi
+	echo 'Creating example database...'
+	psql -U postgres -h 127.0.0.1 -c "CREATE DATABASE oberwesel;"
+	psql -U postgres -h 127.0.0.1 -c "CREATE USER vagrant WITH SUPERUSER PASSWORD 'vagrant';"
+	pg_restore -U postgres -h 127.0.0.1 -d oberwesel /vagrant/data/postgresql/oberwesel.tar
+
+fi 
 
 ################
 # NODEJS + NPM #
@@ -337,11 +381,14 @@ fi
 
 if [ ! -f /usr/bin/nodejs ];
 then
+
+	echo 'Installing Node.js...'
+
 	sudo apt-get -y install nodejs
 	cd /usr/bin/
 	sudo ln -s nodejs node
 	cd /tmp/
-	wget --no-check-certificate https://npmjs.org/install.sh
+	wget -nv --no-check-certificate https://npmjs.org/install.sh
 	sudo chmod u+x install.sh
 	sudo ./install.sh
 fi
@@ -352,6 +399,9 @@ fi
 
 if [ ! -f /var/www/index.html ];
 then
+
+	echo 'Setting up intro page of demo box...'
+
 	cd /var/www/
 	sudo cp /vagrant/var/www/index.html /var/www/index.html
 	sudo cp -a /vagrant/var/www/images /var/www/
@@ -363,6 +413,8 @@ fi
 ###########################################
 # RESTART SERVICES WITH NEW CONFIGURATION #
 ###########################################
+
+echo 'Restarting system services and daemons...'
 
 ## TOMCAT restart ##
 
@@ -403,6 +455,8 @@ sudo cp /vagrant/etc/postgresql/9.1/main/pg_hba.conf /etc/postgresql/9.1/main/pg
 sudo chown postgres:postgres /etc/postgresql/9.1/main/pg_hba.conf
 sudo /etc/init.d/postgresql restart
 
+echo 'Provisioning finished.'
+
 #########
 # TODOS #
 #########
@@ -422,3 +476,4 @@ sudo /etc/init.d/postgresql restart
 # sudo apt-get purge virtualbox*
 # VM guest additions old version => purge and vbguest?
 ## port forwarding?
+## vagrant plugin install vagrant-triggers
