@@ -1,0 +1,14 @@
+startup_message off
+defencoding UTF-8
+defutf8 on
+deflogin on
+autodetach on
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d-%m %{W}%c %{g}]'
+
+screen -t shell1 1 
+screen -t shell2 2 
+screen -t mc     3 sudo mc
+screen -t log    4 sudo tail -f /var/log/syslog
+
+select mc

@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  ## basic settings ##
+
+  config.vm.box = "wheezy64"
+  config.vm.hostname = "ibr"
+
+  config.vm.box_url = "http://www.digitale-akademie.de/fileadmin/vagrantboxes/wheezy64.box"
+
+  config.vm.network :forwarded_port, host: 8080, guest: 80
+
+  config.vm.network :private_network, ip: "10.0.0.24"
+
+  config.trigger.after [:provision, :up, :reload] do
+    system('echo "
+        rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 80 -> 127.0.0.1 port 8080 
+    " | sudo pfctl -ef - > /dev/null 2>&1; echo "==> Fowarding Ports: 80 -> 8080 & Enabling pf"')  
+  end
+
+  config.trigger.after [:halt, :destroy] do
+    system("sudo pfctl -df /etc/pf.conf > /dev/null 2>&1; echo '==> Removing Port Forwarding & Disabling pf'")
+  end
+
+  ## VM customization ##
+
+  config.vm.provider :virtualbox do |vb|
+
+    vb.customize ["modifyvm", :id, "--memory", 2096]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+
+  end
+
+  ## provisioning ##
+
+  config.vm.provision :shell, :path => "bootstrap.sh"
+
+end

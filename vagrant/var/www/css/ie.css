@@ -1,0 +1,48 @@
+/*
+Site:			www.spatialhumanities.de
+
+Author(s):		TS
+Created:		2012-10-01
+
+Usage:			Internet Explorer stylesheet
+
+*/
+
+/* ## IE 7 + 8 ####################################################################### */
+
+/* SEARCH */
+
+#search .searchfields {
+	right: -3.5em;
+}
+
+#searchbutton {
+	top: -0.7em;
+	right: 3.5em;
+	width: 2em;
+}
+
+/* NAV */
+
+nav .secondlevel .last {
+	background: none;
+	padding: 0;
+}
+
+/* FORMS */
+
+.ibr legend {
+	margin: -2em 0 2em 0;
+}
+
+.lp legend {
+	margin-bottom: -2em;
+}
+
+/* NEWS */
+
+#ibr-14 article {
+	background: none;
+}
+
+/* ## IE 7 ########################################################################## */
