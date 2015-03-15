@@ -178,8 +178,6 @@ then
 
 	sudo apt-get -y install oracle-java7-installer
 	sudo apt-get -y install oracle-java7-set-default
-
-	export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 else
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 fi
@@ -191,7 +189,36 @@ fi
 if [ ! -f /etc/tomcat7/server.xml ];
 then
 	echo 'Installing Tomcat Application Server and Maven...'
+	sudo export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 	sudo apt-get -y install tomcat7 tomcat7-admin maven
+fi
+
+##########
+# APACHE #
+##########
+
+if [ ! -f /etc/apache2/apache2.conf ];
+then
+
+	echo 'Installing Apache Webserver...'
+
+	# install apache2
+	sudo apt-get -y install apache2 libapache2-mod-jk
+
+	# install SSL tools
+	sudo apt-get -y install ssl-cert
+
+	# install OpenSSL
+	sudo apt-get -y install openssl
+
+	# install curl dev package
+	sudo apt-get -y install libcurl4-openssl-dev
+
+	# enable modules
+	sudo a2enmod rewrite ssl headers
+
+	# remove default index
+	sudo rm -rf /var/www/index.html
 fi
 
 ##########
@@ -251,34 +278,6 @@ fi
 #	sudo mv /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
 
 #fi
-
-##########
-# APACHE #
-##########
-
-if [ ! -f /etc/apache2/apache2.conf ];
-then
-
-	echo 'Installing Apache Webserver...'
-
-	# install apache2
-	sudo apt-get -y install apache2 libapache2-mod-jk
-
-	# install SSL tools
-	sudo apt-get -y install ssl-cert
-
-	# install OpenSSL
-	sudo apt-get -y install openssl
-
-	# install curl dev package
-	sudo apt-get -y install libcurl4-openssl-dev
-
-	# enable modules
-	sudo a2enmod rewrite ssl headers
-
-	# remove default index
-	sudo rm -rf /var/www/index.html
-fi
 
 ##########
 # VIEWER #
