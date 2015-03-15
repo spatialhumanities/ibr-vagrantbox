@@ -176,10 +176,11 @@ then
 	echo 'oracle-java7-installer shared/error-oracle-license-v1-1 error' | debconf-set-selections
 	echo 'oracle-java7-installer oracle-java7-installer/not_exist error' | debconf-set-selections
 
-	sudo apt-get -y install oracle-java7-installer
-	sudo apt-get -y install oracle-java7-set-default
+	sudo apt-get -y install oracle-java7-installer oracle-java7-set-default
+
+	export JAVA_HOME="/usr/lib/jvm/java-7-oracle/jre"
 else
-	export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+	export JAVA_HOME="/usr/lib/jvm/java-7-oracle/jre"
 fi
 
 ##################
@@ -189,8 +190,20 @@ fi
 if [ ! -f /etc/tomcat7/server.xml ];
 then
 	echo 'Installing Tomcat Application Server and Maven...'
-	sudo export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 	sudo apt-get -y install tomcat7 tomcat7-admin maven
+
+	sudo rm -rf /etc/default/tomcat7
+	sudo rm -rf /etc/tomcat7/server.xml
+	sudo rm -rf /etc/tomcat7/tomcat-users.xml
+	sudo rm -rf /etc/libapache2-mod-jk/workers.properties
+	
+	sudo cp /vagrant/etc/default/tomcat7 /etc/default/tomcat7
+	sudo cp /vagrant/etc/tomcat7/server.xml /etc/tomcat7/server.xml
+	sudo cp /vagrant/etc/tomcat7/tomcat-users.xml /etc/tomcat7/tomcat-users.xml
+	sudo chmod o+r /etc/tomcat7/tomcat-users.xml
+	sudo cp /vagrant/etc/libapache2-mod-jk/workers.properties /etc/libapache2-mod-jk/workers.properties
+	
+	sudo /etc/init.d/tomcat7 restart
 fi
 
 ##########
@@ -217,8 +230,14 @@ then
 	# enable modules
 	sudo a2enmod rewrite ssl headers
 
-	# remove default index
+	# remove defaults
 	sudo rm -rf /var/www/index.html
+	sudo rm -rf /etc/apache2/sites-available/default
+	
+	sudo cp /vagrant/etc/apache2/sites-available/default /etc/apache2/sites-available/default
+	sudo cp /vagrant/etc/apache2/conf.d/wheezy64.conf /etc/apache2/conf.d/wheezy64.conf
+
+	sudo /etc/init.d/apache2 restart
 fi
 
 ##########
@@ -231,7 +250,7 @@ then
 	sudo mkdir -p /usr/share/tomcat7/.aduna/
 	sudo chown root:tomcat7 /usr/share/tomcat7/.aduna/
 	sudo chmod g+w /usr/share/tomcat7/.aduna/
-	cd /tmp/
+	cd /var/tmp/
 	sudo wget -nv --trust-server-names "http://sourceforge.net/projects/sesame/files/Sesame%202/2.8.1/openrdf-sesame-2.8.1-sdk.tar.gz/download"
 	tar -xzvf openrdf-sesame-2.8.1-sdk.tar.gz
 	sudo mv openrdf-sesame-2.8.1/war/openrdf-sesame.war /var/lib/tomcat7/webapps/openrdf-sesame.war
@@ -297,6 +316,24 @@ then
 
 fi
 
+################
+# NODEJS + NPM #
+################
+
+if [ ! -f /usr/bin/nodejs ];
+then
+
+	echo 'Installing Node.js...'
+
+	sudo apt-get -y install nodejs
+	cd /usr/bin/
+	sudo ln -s nodejs node
+	cd /tmp/
+	wget -nv --no-check-certificate https://npmjs.org/install.sh
+	sudo chmod u+x install.sh
+	sudo ./install.sh
+fi
+
 #######
 # ASK #
 #######
@@ -313,6 +350,23 @@ then
 	sudo rm ask.zip
 	sudo chown -R www-data:www-data /var/www/ask/
 
+fi
+
+#########
+# INTRO #
+#########
+
+if [ ! -f /var/www/index.html ];
+then
+
+	echo 'Setting up intro page of demo box...'
+
+	cd /var/www/
+	sudo cp /vagrant/var/www/index.html /var/www/index.html
+	sudo cp -a /vagrant/var/www/images /var/www/
+	sudo cp -a /vagrant/var/www/css /var/www/
+	sudo cp -a /vagrant/var/www/js /var/www/
+	sudo chown -R www-data:www-data /var/www/
 fi
 
 #########
@@ -374,41 +428,6 @@ then
 	sudo psql -U postgres -h 127.0.0.1 -c "CREATE USER vagrant WITH SUPERUSER PASSWORD 'vagrant';"
 	sudo pg_restore -U postgres -h 127.0.0.1 -d oberwesel /vagrant/data/postgresql/oberwesel.tar
 
-fi 
-
-################
-# NODEJS + NPM #
-################
-
-if [ ! -f /usr/bin/nodejs ];
-then
-
-	echo 'Installing Node.js...'
-
-	sudo apt-get -y install nodejs
-	cd /usr/bin/
-	sudo ln -s nodejs node
-	cd /tmp/
-	wget -nv --no-check-certificate https://npmjs.org/install.sh
-	sudo chmod u+x install.sh
-	sudo ./install.sh
-fi
-
-#########
-# INTRO #
-#########
-
-if [ ! -f /var/www/index.html ];
-then
-
-	echo 'Setting up intro page of demo box...'
-
-	cd /var/www/
-	sudo cp /vagrant/var/www/index.html /var/www/index.html
-	sudo cp -a /vagrant/var/www/images /var/www/
-	sudo cp -a /vagrant/var/www/css /var/www/
-	sudo cp -a /vagrant/var/www/js /var/www/
-	sudo chown -R www-data:www-data /var/www/
 fi
 
 ###########################################
