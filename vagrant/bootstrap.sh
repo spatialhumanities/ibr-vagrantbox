@@ -2,6 +2,26 @@
 
 export PATH="$PATH:/sbin:/usr/sbin:usr/local/sbin"
 
+###############################
+# IBR PACKAGES & EXAMPLE DATA #
+###############################
+
+if [ ! -f /vagrant/data/downloaded ];
+then
+	echo 'Downloading example data...'
+	cd /vagrant/
+	wget -nv http://www.spatialhumanities.de/data.zip
+	unzip data.zip
+fi
+
+if [ ! -f /vagrant/packages/downloaded ];
+then
+	echo 'Downloading IBR software components...'
+	cd /vagrant/
+	wget -nv http://www.spatialhumanities.de/packages.zip
+	unzip packages.zip
+fi
+
 ########
 # bash #
 ########
@@ -158,6 +178,8 @@ then
 
 	sudo apt-get -y install oracle-java7-installer
 	sudo apt-get -y install oracle-java7-set-default
+
+	export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 else
 	export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 fi
@@ -192,27 +214,6 @@ then
 
 	# create project triple store
 	sudo expect -f /vagrant/scripts/sesame-setup.expect
-	
-fi
-
-###############################
-# IBR PACKAGES & EXAMPLE DATA #
-###############################
-
-if [ ! -f /vagrant/data/downloaded ];
-then
-	echo 'Downloading example data...'
-	cd /vagrant/
-	wget -nv http://www.spatialhumanities.de/data.zip
-	unzip data.zip
-fi
-
-if [ ! -f /vagrant/packages/downloaded ];
-then
-	echo 'Downloading IBR software components...'
-	cd /vagrant/
-	wget -nv http://www.spatialhumanities.de/packages.zip
-	unzip packages.zip
 fi
 
 ################
@@ -252,6 +253,34 @@ fi
 #fi
 
 ##########
+# APACHE #
+##########
+
+if [ ! -f /etc/apache2/apache2.conf ];
+then
+
+	echo 'Installing Apache Webserver...'
+
+	# install apache2
+	sudo apt-get -y install apache2 libapache2-mod-jk
+
+	# install SSL tools
+	sudo apt-get -y install ssl-cert
+
+	# install OpenSSL
+	sudo apt-get -y install openssl
+
+	# install curl dev package
+	sudo apt-get -y install libcurl4-openssl-dev
+
+	# enable modules
+	sudo a2enmod rewrite ssl headers
+
+	# remove default index
+	sudo rm -rf /var/www/index.html
+fi
+
+##########
 # VIEWER #
 ##########
 
@@ -285,34 +314,6 @@ then
 	sudo rm ask.zip
 	sudo chown -R www-data:www-data /var/www/ask/
 
-fi
-
-##########
-# APACHE #
-##########
-
-if [ ! -f /etc/apache2/apache2.conf ];
-then
-
-	echo 'Installing Apache Webserver...'
-
-	# install apache2
-	sudo apt-get -y install apache2 libapache2-mod-jk
-
-	# install SSL tools
-	sudo apt-get -y install ssl-cert
-
-	# install OpenSSL
-	sudo apt-get -y install openssl
-
-	# install curl dev package
-	sudo apt-get -y install libcurl4-openssl-dev
-
-	# enable modules
-	sudo a2enmod rewrite ssl headers
-
-	# remove default index
-	sudo rm -rf /var/www/index.html
 fi
 
 #########
