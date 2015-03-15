@@ -229,3 +229,12 @@ Datei: dojoConfig.js
         // annotationServer: "http://metasound.dibet.univpm.it:8080/annotationserver/"
     },
 ```
+
+### Tomcat Manager
+
+Die Tomcat Manager Applikation verwendet folgende Zugangsdaten:
+
+```bash
+Benutzer: vagrant
+Passwort: vagrant
+```
