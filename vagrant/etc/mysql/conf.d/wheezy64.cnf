@@ -6,7 +6,6 @@ query_cache_size        = 32M
 open_files_limit = 2048
 innodb_file_per_table
 skip_name_resolve
-skip_networking
 
 [mysql]
 default-character-set   = utf8
