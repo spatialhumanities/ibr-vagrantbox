@@ -10,16 +10,18 @@ if [ ! -f /vagrant/data/downloaded ];
 then
 	echo 'Downloading example data...'
 	cd /vagrant/
-	wget -nv http://www.spatialhumanities.de/data.zip
-	unzip data.zip
+	wget -nv http://download.spatialhumanities.de/ibr/data.tgz
+	tar -xzvf data.tgz
+	rm -rf /vagrant/data.tgz
 fi
 
 if [ ! -f /vagrant/packages/downloaded ];
 then
 	echo 'Downloading IBR software components...'
 	cd /vagrant/
-	wget -nv http://www.spatialhumanities.de/packages.zip
-	unzip packages.zip
+	wget -nv http://download.spatialhumanities.de/ibr/packages.tgz
+	tar -xzvf packages.tgz
+	rm -rf /vagrant/packages.tgz
 fi
 
 ########
@@ -288,15 +290,15 @@ fi
 # ANNOTATIONSERVER #
 ####################
 
-#if [ ! -f /var/lib/tomcat7/webapps/annotationserver.war ];
-#then
+if [ ! -f /var/lib/tomcat7/webapps/annotationserver.war ];
+then
 
-#	echo 'Deploying Annotationserver...'
+	echo 'Deploying Annotationserver...'
 
 	# deploy annotationserver
-#	sudo mv /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
+	sudo mv /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
 
-#fi
+fi
 
 ##########
 # VIEWER #
@@ -476,25 +478,3 @@ sudo chown postgres:postgres /etc/postgresql/9.1/main/pg_hba.conf
 sudo /etc/init.d/postgresql restart
 
 echo 'Provisioning finished.'
-
-#########
-# TODOS #
-#########
-
-# spatialstore
-## apache: always redirect to /rest
-
-# annotationserver
-## check: http://old.thepund.it/documentation/deploy-and-configure-the-pundit-server/ - section RDF Repository Configuration
-
-# put documentation of box on index page?
-
-# get working wars
-# put stuff online
-# tear down / bring up
-## vbguest plugin?
-# sudo apt-get purge virtualbox*
-# VM guest additions old version => purge and vbguest?
-## vagrant plugin install vagrant-vbguest
-## port forwarding?
-## vagrant plugin install vagrant-triggers
