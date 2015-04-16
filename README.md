@@ -7,8 +7,8 @@ Diese Vagrantbox liefert eine vollständige Serverumgebung zum lokalen Betrieb d
 ## Systemvoraussetzungen zum lokalen Betrieb der Demo VM
 
 - Betriebsystem: Windows/MAC/Linux
-- Vagrant 1.4.2+
-- Virtual Box 4.3.20+
+- Vagrant 1.7.2
+- Virtual Box 4.3.26
 
 Die Installation von Vagrant und Virtual Box auf dem Host-Computer kann den jeweiligen Dokumentationen entnommen werden. 
 
@@ -21,7 +21,7 @@ Nach dem Herunterladen der Vagrantbox kann die Initalisierung  über
 vagrant up --provision
 ```
 
-vorgenommen werden. Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung. Bei der ersten Initialisierung der Box werden ca. 30 GB Daten geladen.
+vorgenommen werden. Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
 
 *Hinweis:* Sowohl während des Installationsprozesses der Vagrantbox als auch zum lokalen Betrieb der Demo VM muss der Host-Computer über Internetzugriff verfügen.
 
@@ -48,7 +48,7 @@ Die Vagrantbox basiert auf einem Debian 7 (Wheezy) Betriebssystem. Sie wird mit 
 
 - spatialstore.war
 - annotationserver.war
-- viewer.war
+- viewer.zip
 - ask.tgz
 
 Alle Java-Webapplikationen werden bei der Initialisierung der VM automatisch in Tomcat deployed.
