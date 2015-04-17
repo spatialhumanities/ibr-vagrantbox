@@ -1,35 +1,33 @@
 # IBR Vagrantbox
 
-Diese Vagrantbox liefert eine vollständige Serverumgebung zum lokalen Betrieb des Generic Viewers und aller zugehörigen Komponenten einschließlich eines Beispielprojektes (Liebfrauenkirche, Obwerwesel).
+Diese Vagrantbox liefert eine lokale Serverumgebung zum Test des Generic Viewers und aller zugehörigen Komponenten einschließlich eines Beispielprojektes (Liebfrauenkirche, Obwerwesel).
 
-> Hinweis: Die Box ist noch nicht endgültig produktionsreif.
-
-## Systemvoraussetzungen zum lokalen Betrieb der Demo VM
+## Systemvoraussetzungen zum Betrieb der Box
 
 - Betriebsystem: Windows/MAC/Linux
 - Vagrant 1.7.2
 - Virtual Box 4.3.26
 
-Die Installation von Vagrant und Virtual Box auf dem Host-Computer kann den jeweiligen Dokumentationen entnommen werden. 
+Die Installation von Vagrant und Virtual Box auf dem Host-Computer kann folgenden Dokumentationen entnommen werden:
 
 - https://www.virtualbox.org/wiki/Documentation
 - https://docs.vagrantup.com/v2/installation/index.html
 
-Nach dem Herunterladen der Vagrantbox kann die Initalisierung  über
+Danach kann dieses Git Repository in ein lokales Verzeichnis geklont und die Box über
 
 ```
 vagrant up --provision
 ```
 
-vorgenommen werden. Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
+gestartet werden. Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
 
-*Hinweis:* Sowohl während des Installationsprozesses der Vagrantbox als auch zum lokalen Betrieb der Demo VM muss der Host-Computer über Internetzugriff verfügen.
+*Hinweis:* Sowohl während des Installationsprozesses der Vagrantbox als auch zum lokalen Betrieb der VM muss der Host-Computer über Internetzugriff verfügen.
 
-Sowohl bei einem _vagrant up_ als auch bei einem _vagrant reload_ sollte immer der _--provision_ Parameter verwendet werden, damit die einzelnen Services auf der Demo VM korrekt gestartet werden.
+Sowohl bei einem _vagrant up_ als auch bei einem _vagrant reload_ sollte immer der _--provision_ Parameter angegeben werden, damit die einzelnen Services auf der Demo VM korrekt gestartet werden.
 
-## Programmkomponenten der Demo VM
+## Programmkomponenten der Vagrantbox
 
-Die Vagrantbox basiert auf einem Debian 7 (Wheezy) Betriebssystem. Sie wird mit folgenden Paketen zum lokalen Betrieb der IBR Software ausgestattet:
+Die Box basiert auf einem Debian 7 (Wheezy) Betriebssystem. Sie wird mit folgenden Paketen zum lokalen Betrieb der IBR Software ausgestattet:
 
 ### Systemkomponenten
 
@@ -58,28 +56,28 @@ Alle Java-Webapplikationen werden bei der Initialisierung der VM automatisch in 
 Nach erfolgreicher Einrichtung der Vagrantbox sind die IBR Webapplikationen im Browser zu erreichen unter:
 
 ```bash
-http://localhost/ (Startseite der Demo Box)
+http://localhost:8095/ (Startseite der Demo Box)
 ```
 
-*Hinweis:* Auf dem Host-Computer sollte kein lokaler Webserver auf Port 80 laufen, da es sonst zu Portkonflikten kommt.
+*Hinweis:* Auf dem Host-Computer sollte kein Programm auf Port 8095 laufen, da es sonst zu Portkonflikten kommt.
 
 Die einzelnen Komponenten können unter folgenden Adressen angesprochen werden:
 
 ```bash
-- http://localhost/viewer (Generic Viewer)
-- http://localhost/spatialstore (Spatialstore)
-- http://localhost/annotationserver (Annotationserver)
-- http://localhost/openrdf-sesame (Sesame Server)
-- http://localhost/openrdf-workbench (Sesame Workbench)
-- http://localhost/ask (Ask Client)
-- http://localhost/manager (Tomcat Manager)
+- http://localhost:8095/viewer (Generic Viewer)
+- http://localhost:8095/spatialstore (Spatialstore)
+- http://localhost:8095/annotationserver (Annotationserver)
+- http://localhost:8095/openrdf-sesame (Sesame Server)
+- http://localhost:8095/openrdf-workbench (Sesame Workbench)
+- http://localhost:8095/ask (Ask Client)
+- http://localhost:8095/manager (Tomcat Manager)
 ```
 
 ## Beispielprojekt Oberwesel
 
 Zur beispielhaften Arbeit mit dem Generic Viewer steht in der lokalen Umgebung das Referenzprojekt von IBR (Liebfrauenkirche, Oberwesel) zur Verfügung. 
-Die Punktwolken und Panoramabilder werden bei der Initialisierung des vagrant Ordners heruntergeladen und stehen dort zur Verfügung. Sie werden dann in
-die Vagrantbox gelinkt um Datenduplikation zu vermeiden. Innerhalb der Box befinden sich die Daten unter nachfolgenden Pfaden.
+Die Punktwolken und Panoramabilder werden bei der Initialisierung des vagrant Ordners heruntergeladen. Sie werden in die Vagrantbox gelinkt um 
+Datenduplikation zu vermeiden. Innerhalb der Box befinden sich die Daten unter nachfolgenden Pfaden.
 
 ### Pfade
 
@@ -140,15 +138,15 @@ Datei: communicator.js
 ```
 
 ```javascript
-GV.Config.spatialstore = "http://localhost/spatialstore/";
+GV.Config.spatialstore = "http://localhost:8095/spatialstore/";
 
 GV.Config.spatialstoreURL = GV.Config.spatialstore + "rest/";
 GV.OpenID.data = GV.Config.spatialstore + "openid/data";
 GV.OpenID.login = GV.Config.spatialstore + "openid/login";
 GV.OpenID.logout = GV.Config.spatialstore + "openid/logout";
 
-GV.TRIPLESTORE_API = "http://localhost/openrdf-sesame/repositories/oberwesel";
-GV.TRIPLESTORE_GUI = "http://localhost/openrdf-workbench/repositories/oberwesel";
+GV.TRIPLESTORE_API = "http://localhost:8095/openrdf-sesame/repositories/oberwesel";
+GV.TRIPLESTORE_GUI = "http://localhost:8095/openrdf-workbench/repositories/oberwesel";
 ```
 
 ### Spatialstore
@@ -169,11 +167,11 @@ db_database=oberwesel
 db_user=vagrant
 db_password=vagrant
 
-gv_host=http://localhost
-gv_viewer=http://localhost/viewer
-gv_rest=http://localhost/spatialstore/rest
-gv_openid=http://localhost/openid
-gv_viewerjsp=http://localhost/viewer/test.jsp
+gv_host=http://localhost:8095
+gv_viewer=http://localhost:8095/viewer
+gv_rest=http://localhost:8095/spatialstore/rest
+gv_openid=http://localhost:8095/openid
+gv_viewerjsp=http://localhost:8095/viewer/test.jsp
 ```
 
 ### Annotationserver
@@ -188,7 +186,7 @@ Datei: web.xml
     <context-param>
         <description>Repository or DB URL</description>
         <param-name>eu.semlibproject.annotationserver.config.db.url</param-name>
-        <param-value>http://localhost/openrdf-sesame/</param-value>
+        <param-value>http://localhost:8095/openrdf-sesame/</param-value>
     </context-param>
 
 	[...]
@@ -220,7 +218,7 @@ Datei: dojoConfig.js
         nodeServerPort: 53000,
 
         // Instance of the annotation server to query
-        annotationServer: "http://localhost/annotationserver/"
+        annotationServer: "http://localhost:8095/annotationserver/"
 
         // demo. is the official dev server
         // annotationServer: "http://demo.as.thepund.it:8080/annotationserver/"
