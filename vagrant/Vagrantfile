@@ -12,19 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "ibr-vagrantbox"
 
   config.vm.network :private_network, ip: "10.0.0.24"
-
-  config.vm.network :forwarded_port, host: 80, guest: 80
-#  config.vm.network :forwarded_port, host: 8080, guest: 80
-
-#  config.trigger.after [:provision, :up, :reload] do
-#    system('echo "
-#        rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 80 -> 127.0.0.1 port 8080 
-#    " | sudo pfctl -ef - > /dev/null 2>&1; echo "==> Fowarding Ports: 80 -> 8080 & Enabling pf"')  
-#  end
-
-#  config.trigger.after [:halt, :destroy] do
-#    system("sudo pfctl -df /etc/pf.conf > /dev/null 2>&1; echo '==> Removing Port Forwarding & Disabling pf'")
-#  end
+  config.vm.network :forwarded_port, host: 8095, guest: 8095
 
   ## VM customization ##
 
