@@ -1,10 +1,12 @@
 spawn /var/tmp/openrdf-sesame-2.8.1/bin/console.sh
-expect "" { send "connect http://localhost:8095/openrdf-sesame.\n" }
-expect "Connected to http://localhost:8095/openrdf-sesame" { send "create native.\n" }
-expect "Repository ID" { send "oberwesel\n" }
-expect "Repository title" { send "Oberwesel Triple Store\n" }
-expect "Triple indexes" { send "\n" }
-expect "Repository created" {
+send "connect http://localhost:8095/openrdf-sesame.\n"
+expect "Connected to http://localhost:8095/openrdf-sesame"
+send "create native.\n"
+expect "Repository ID"
+send "oberwesel\n"
+expect "Repository title"
+send "Oberwesel Triple Store\n"
+expect "Triple indexes"
+send "\n"
+expect "Repository created"
 send "exit.\n"
-exit
-}
