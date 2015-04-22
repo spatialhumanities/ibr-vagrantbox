@@ -400,38 +400,6 @@ then
 
 fi
 
-##############
-# PHPMYADMIN #
-##############
-
-if [ ! -f /etc/phpmyadmin/config.inc.php ];
-then
-
-	# Used debconf-get-selections to find out what questions will be asked
-	# This command needs debconf-utils
-
-	# Handy for debugging. clear answers phpmyadmin: echo PURGE | debconf-communicate phpmyadmin
-
-	echo 'phpmyadmin phpmyadmin/dbconfig-install boolean false' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
-
-	echo 'phpmyadmin phpmyadmin/app-password-confirm password vagrant' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/mysql/admin-pass password vagrant' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/password-confirm password vagrant' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/setup-password password vagrant' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/database-type select mysql' | debconf-set-selections
-	echo 'phpmyadmin phpmyadmin/mysql/app-pass password vagrant' | debconf-set-selections
-
-	echo 'dbconfig-common dbconfig-common/mysql/app-pass password vagrant' | debconf-set-selections
-	echo 'dbconfig-common dbconfig-common/mysql/app-pass password' | debconf-set-selections
-	echo 'dbconfig-common dbconfig-common/password-confirm password vagrant' | debconf-set-selections
-	echo 'dbconfig-common dbconfig-common/app-password-confirm password vagrant' | debconf-set-selections
-	echo 'dbconfig-common dbconfig-common/app-password-confirm password vagrant' | debconf-set-selections
-	echo 'dbconfig-common dbconfig-common/password-confirm password vagrant' | debconf-set-selections
-
-	sudo apt-get -y install phpmyadmin
-fi
-
 ########################
 # POSTGRESQL + POSTGIS #
 ########################
@@ -471,13 +439,45 @@ fi
 # PHPPGADMIN #
 ##############
 
-if [ ! -f /etc/init.d/postgresql ];
+if [ ! -f /etc/apache2/conf.d/phppgadmin ];
 then
 	sudo apt-get -y install phppgadmin
 	sudo rm /etc/apache2/conf.d/phppgadmin
 	sudo cp /vagrant/etc/apache2/conf.d/phppgadmin /etc/apache2/conf.d/phppgadmin
 	sudo rm /usr/share/phppgadmin/conf/config.inc.php
 	sudo cp /vagrant/usr/share/phppgadmin/conf/config.inc.php /usr/share/phppgadmin/conf/
+fi
+
+##############
+# PHPMYADMIN #
+##############
+
+if [ ! -f /etc/phpmyadmin/config.inc.php ];
+then
+
+	# Used debconf-get-selections to find out what questions will be asked
+	# This command needs debconf-utils
+
+	# Handy for debugging. clear answers phpmyadmin: echo PURGE | debconf-communicate phpmyadmin
+
+	echo 'phpmyadmin phpmyadmin/dbconfig-install boolean false' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
+
+	echo 'phpmyadmin phpmyadmin/app-password-confirm password vagrant' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/mysql/admin-pass password vagrant' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/password-confirm password vagrant' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/setup-password password vagrant' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/database-type select mysql' | debconf-set-selections
+	echo 'phpmyadmin phpmyadmin/mysql/app-pass password vagrant' | debconf-set-selections
+
+	echo 'dbconfig-common dbconfig-common/mysql/app-pass password vagrant' | debconf-set-selections
+	echo 'dbconfig-common dbconfig-common/mysql/app-pass password' | debconf-set-selections
+	echo 'dbconfig-common dbconfig-common/password-confirm password vagrant' | debconf-set-selections
+	echo 'dbconfig-common dbconfig-common/app-password-confirm password vagrant' | debconf-set-selections
+	echo 'dbconfig-common dbconfig-common/app-password-confirm password vagrant' | debconf-set-selections
+	echo 'dbconfig-common dbconfig-common/password-confirm password vagrant' | debconf-set-selections
+
+	sudo apt-get -y install phpmyadmin
 fi
 
 ###########################################
