@@ -221,7 +221,7 @@ then
 	sudo apt-get -y install apache2 libapache2-mod-jk
 
 	# Install PHP5 support
-	sudo apt-get -y install php5 libapache2-mod-php5 php5-cgi php5-cli php5-common php5-curl php5-dev php5-gd php5-mcrypt php5-memcache php5-mysql php5-xsl php5-intl php-pear
+	sudo apt-get -y install php5 libapache2-mod-php5 php5-cgi php5-cli php5-common php5-curl php5-dev php5-gd php5-mcrypt php5-memcache php5-xsl php5-intl php-pear
 
 	# install SSL tools
 	sudo apt-get -y install ssl-cert
@@ -299,7 +299,7 @@ then
 	echo 'Deploying Annotationserver...'
 
 	# deploy annotationserver
-	sudo mv /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
+	sudo cp -a /vagrant/packages/annotationserver.war /var/lib/tomcat7/webapps/annotationserver.war
 
 fi
 
