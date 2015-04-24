@@ -13,13 +13,13 @@ Die Installation von Vagrant und Virtual Box auf dem Host-Computer kann folgende
 - https://www.virtualbox.org/wiki/Documentation
 - https://docs.vagrantup.com/v2/installation/index.html
 
-Danach kann dieses Git Repository in ein lokales Verzeichnis geklont und die Box über
+Danach ist dieses Git Repository (ibr-vagrantbox) in ein lokales Verzeichnis zu klonen. Im lokalen Verzeichnis ist dann im Unterverzeichnis die für valgrand notwendige Installationanweisungdatei (vagrantfile) zu finden. Im nächsten Schritt öffnet man eine Konsole und setzt im Verzeichnis mit dem vagrantfile folgenden Befehl ab, um die Box zu erstellen.
 
 ```
 vagrant up --provision
 ```
 
-gestartet werden. Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
+Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung und kann einige Zeit in Anspruch nehmen. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
 
 *Hinweis:* Sowohl während des Installationsprozesses der Vagrantbox als auch zum lokalen Betrieb der VM muss der Host-Computer über Internetzugriff verfügen.
 
