@@ -2,6 +2,11 @@
 
 Diese Vagrantbox liefert eine lokale Serverumgebung zum Test des Generic Viewers und aller zugehörigen Komponenten einschließlich eines Beispielprojektes (Liebfrauenkirche, Obwerwesel).
 
+## Credits
+
+Veröffentlicht unter MIT Lizenz.
+@author: <a href="https://github.com/tesselation">Torsten Schrade (@tesselation)</a>
+
 ## Systemvoraussetzungen zum Betrieb der Box
 
 - Betriebsystem: Windows/MAC/Linux
@@ -13,7 +18,7 @@ Die Installation von Vagrant und Virtual Box auf dem Host-Computer kann folgende
 - https://www.virtualbox.org/wiki/Documentation
 - https://docs.vagrantup.com/v2/installation/index.html
 
-Danach ist dieses Git Repository (ibr-vagrantbox) in ein lokales Verzeichnis zu klonen. Im lokalen Verzeichnis ist dann im Unterverzeichnis die für valgrand notwendige Installationanweisungdatei (vagrantfile) zu finden. Im nächsten Schritt öffnet man eine Konsole und setzt im Verzeichnis mit dem vagrantfile folgenden Befehl ab, um die Box zu erstellen.
+Danach ist dieses Git Repository (ibr-vagrantbox) in ein lokales Verzeichnis zu klonen. Im lokalen Verzeichnis ist dann im Unterverzeichnis die für Vagrant notwendige Installationanweisungdatei (Vagrantfile) zu finden. Im nächsten Schritt öffnet man eine Konsole und setzt im Verzeichnis mit dem vagrantfile folgenden Befehl ab, um die Box zu erstellen.
 
 ```
 vagrant up --provision
