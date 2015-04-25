@@ -5,6 +5,7 @@ Diese Vagrantbox liefert eine lokale Serverumgebung zum Test des Generic Viewers
 ## Credits
 
 Veröffentlicht unter MIT Lizenz.
+
 @author: <a href="https://github.com/tesselation">Torsten Schrade (@tesselation)</a>
 
 ## Systemvoraussetzungen zum Betrieb der Box
@@ -23,6 +24,8 @@ Danach ist dieses Git Repository (ibr-vagrantbox) in ein lokales Verzeichnis zu 
 ```
 vagrant up --provision
 ```
+
+![Initialisierung der Box über die Windows Eingabeaufforderung](vagrantup.png "vagrant up!")
 
 Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung und kann einige Zeit in Anspruch nehmen. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
 
