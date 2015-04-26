@@ -33,6 +33,22 @@ Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung un
 
 Sowohl bei einem _vagrant up_ als auch bei einem _vagrant reload_ sollte immer der _--provision_ Parameter angegeben werden, damit die einzelnen Services auf der Demo VM korrekt gestartet werden.
 
+## Erster Start von GenericViewer
+
+Zunächst muss der sichergestellt werden, das die Vagrant-Box läuft:
+
+```
+[console] vagrant up --provision
+```
+![Start von ibr-vagrantbox über die Windows Eingabeaufforderung](Image2.png "is already running!")
+
+Sobald die IBR-vagrant-bos erfolgreich läuft, kann über einen Internet-Browser über die Adresse
+
+auf die Inhalte der Box zugeriffen werden. Es erscheint eine Webseite mit meheren Links. Der GenricViewer erscheint, wenn der Link 'GenericViewer' angeklickt wird oder die folgende Seite angewählt wird.
+---
+http://localhost:8095/viewer/' 
+---
+
 ## Programmkomponenten der Vagrantbox
 
 Die Box basiert auf einem Debian 7 (Wheezy) Betriebssystem. Sie wird mit folgenden Paketen zum lokalen Betrieb der IBR Software ausgestattet:
