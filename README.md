@@ -44,10 +44,15 @@ Zunächst muss der sichergestellt werden, das die Vagrant-Box läuft:
 
 Sobald die IBR-vagrant-bos erfolgreich läuft, kann über einen Internet-Browser über die Adresse
 
-auf die Inhalte der Box zugeriffen werden. Es erscheint eine Webseite mit meheren Links. Der GenricViewer erscheint, wenn der Link 'GenericViewer' angeklickt wird oder die folgende Seite angewählt wird.
----
+```
+http://localhost:8095/
+```
+
+auf die Inhalte der Box zugeriffen werden. Es erscheint eine Webseite mit meheren Links. Der GenricViewer erscheint, wenn der Link [GenericViewer] angeklickt wird oder die folgende Seite angewählt wird.
+
+```
 http://localhost:8095/viewer/' 
----
+```
 
 ## Programmkomponenten der Vagrantbox
 
