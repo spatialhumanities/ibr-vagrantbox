@@ -27,7 +27,7 @@ vagrant up --provision
 
 ![Initialisierung der Box über die Windows Eingabeaufforderung](vagrantup.png "vagrant up!")
 
-Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung und kann einige Zeit in Anspruch nehmen. Bei der ersten Initialisierung der Box werden ca. 20 GB Daten geladen.
+Die Dauer des Installationsprozesses ist abhängig von der Internetverbindung und kann einige Zeit in Anspruch nehmen, da die Daten des Projekets "Oberwesel" ca. 20 GB (ZIP-Datei) umfassen. Während der ersten Initialisierung der Box sind temporär ca. 40 GB erforderlich, um die Daten zu entpacken und zu konfigurieren.
 
 *Hinweis:* Sowohl während des Installationsprozesses der Vagrantbox als auch zum lokalen Betrieb der VM muss der Host-Computer über Internetzugriff verfügen.
 
